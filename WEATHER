@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <style>
+        /* CSS Styles */
+
+        /* Basic styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* Input and button */
+        #locationInput {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        #getWeatherButton {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        #getWeatherButton:hover {
+            background-color: #0056b3;
+        }
+
+        /* Weather display */
+        #weatherContainer {
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+
+        h2, p {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Weather App</h1>
+    <input type="text" id="locationInput" placeholder="Enter location">
+    <button id="getWeatherButton">Get Weather</button>
+
+    <!-- Container to display weather data -->
+    <div id="weatherContainer">
+        <h2 id="locationName"></h2>
+        <p id="weatherDescription"></p>
+        <p id="temperature"></p>
+        <p id="humidity"></p>
+    </div>
+
+    <script>
+        // JavaScript to handle weather data fetching and display
+
+        document.getElementById('getWeatherButton').addEventListener('click', function() {
+            const location = document.getElementById('locationInput').value;
+            fetchWeatherData(location);
+        });
+
+        function fetchWeatherData(location) {
+            const apiKey = 'your-api-key';
+            const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=${apiKey}`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    displayWeatherData(data);
+                })
+                .catch(error => {
+                    console.error('Error fetching weather data:', error);
+                });
+        }
+
+        function displayWeatherData(data) {
+            // Extract relevant data
+            const locationName = data.name;
+            const weatherDescription = data.weather[0].description;
+            const temperature = data.main.temp;
+            const humidity = data.main.humidity;
+
+            // Display data on the page
+            document.getElementById('locationName').innerText = `Location: ${locationName}`;
+            document.getElementById('weatherDescription').innerText = `Weather: ${weatherDescription}`;
+            document.getElementById('temperature').innerText = `Temperature: ${temperature}°C`;
+            document.getElementById('humidity').innerText = `Humidity: ${humidity}%`;
+        }
+    </script>
+</body>
+
+</html>
